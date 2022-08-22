@@ -2,16 +2,27 @@ import { useState, useEffect } from "react";
 
 let total = 0;
 
-const Carrito = () => {
+
+const Carrito = ( columns) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const result = JSON.parse(localStorage.getItem("carrito")) || [];
+    const result = JSON.parse(localStorage.getItem("carrito"));
     setProducts(result);
   }, []);
-  // console.log(products);
 
-  console.log(products)
+  const printColumnsField = (items, field) => {
+    if(field.includes('.')) {
+      const objectField = field.split('.')
+      return items[objectField[0]][objectField[1]]
+    } else {
+      return items[field]
+    }
+  }
+
+  const setColumns = Object.values(columns)[0]
+
+  console.log(products);
 
   const deleteOrder = () => {
     const product = JSON.parse(localStorage.getItem("carrito"));
@@ -41,7 +52,6 @@ const Carrito = () => {
     total
   );
 
-
   return (
     <div>
       <h1 className="page-content">Mi Carrito</h1>
@@ -53,20 +63,17 @@ const Carrito = () => {
         <table>
           <thead>
             <tr>
-              <th>Cantidad</th>
-              <th>Detalle</th>
-              <th>Subtotal</th>
+              {setColumns.map(title => (
+                <th>{title.headerName}</th>
+              ))}
             </tr>
           </thead>
-          {products.map((e) => {
-            <tbody>
-            <tr key={e._id}>
-              <td>{e.quantity}</td>
-              <td>{e.name}</td>
-              <td>$ {e.price}</td>
-            </tr>
+          <tbody>
+          {products.map(e => 
+            <tr>
+              {setColumns.map(header => (<td>{printColumnsField(e, header.field)}</td>))}
+            </tr>)}
           </tbody>
-          })}
         </table>
         <p>Total a Pagar: $ {totalPrice}</p>
         <div className="page-content">
@@ -78,5 +85,7 @@ const Carrito = () => {
     </div>
   );
 };
+
+
 
 export default Carrito;

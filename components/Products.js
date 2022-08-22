@@ -14,9 +14,11 @@ const showProducts = (data) => {
 
     if (checkProductExist(productId)) {
       product.quantity++;
+      product.price *= product.quantity;
     } else {
       carrito.push(product);
       product.quantity = 1;
+      product.price *= product.quantity;
     }
     localStorage.setItem("carrito", JSON.stringify(carrito))
     console.log(carrito);
