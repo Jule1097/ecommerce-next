@@ -63,14 +63,14 @@ const Carrito = ( columns) => {
         <table>
           <thead>
             <tr>
-              {setColumns.map((title) => (
+              {setColumns.map(title => (
                 <th>{title.headerName}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-          {products.map((e, index) => 
-            <tr key={index}>
+          {products.map(e => 
+            <tr>
               {setColumns.map(header => (<td>{printColumnsField(e, header.field)}</td>))}
             </tr>)}
           </tbody>
