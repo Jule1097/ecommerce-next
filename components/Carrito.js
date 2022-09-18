@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
-let total = 0;
-
+let initialValue = 0;
 
 const Carrito = ( columns) => {
   const [products, setProducts] = useState([]);
@@ -22,7 +21,33 @@ const Carrito = ( columns) => {
 
   const setColumns = Object.values(columns)[0]
 
-  console.log(products);
+  const items = products.map(({ name, quantity,price}) => ({
+    name,
+    price,
+    quantity
+  }))
+  
+  const countItems = products.filter((e) => e.name);
+  
+  const firstPrice = Object.values(countItems).reduce(
+    (acc, { price }) => acc + price,
+    0
+  );
+  
+  const taxes = firstPrice * 0.21;
+  
+  const total = firstPrice + taxes;
+  
+  const date = new Date();
+  
+  const order = {
+    items,
+    subtotal: firstPrice,
+    taxes,
+    total,
+    date
+  }
+  console.log(order);
 
   const deleteOrder = () => {
     const product = JSON.parse(localStorage.getItem("carrito"));
@@ -36,7 +61,7 @@ const Carrito = ( columns) => {
   const sendOrders = () => {
     fetch("http://localhost:4000/api/orders", {
       method: "POST",
-      body: JSON.stringify(products),
+      body: JSON.stringify(order),
       headers: {
         "Content-type": "application/json",
       },
@@ -49,7 +74,7 @@ const Carrito = ( columns) => {
 
   const totalPrice = price.reduce(
     (previousValue, currentValue) => previousValue + currentValue,
-    total
+    initialValue
   );
 
   return (
