@@ -1,5 +1,5 @@
 import Products from "../components/Products";
-import Carrito from "../components/Carrito";
+
 
 export default function Home(data) {
 
@@ -8,8 +8,14 @@ export default function Home(data) {
       <title>Mi Tienda</title>
       <div>
         <h1 className="page-content">Ecommerce APP</h1>
-        <a href="/carrito">Ver carrito</a>
+        
         <Products data={data} />
+      </div>
+      <div>
+        <a href="/orders">Ver ordenes</a>
+      </div>
+      <div>
+        <a href="/carrito">Ver carrito</a>
       </div>
     </div>
   );
