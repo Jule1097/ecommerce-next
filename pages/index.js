@@ -23,13 +23,14 @@ export default function Home(data) {
 
 const API_URL = "http://localhost:4000/api/products";
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   const res = await fetch(API_URL);
   const data = await res.json();
 
   return {
     props: {
       data,
+      protected: true
     },
   };
 }
