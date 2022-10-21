@@ -1,14 +1,24 @@
+import { useState } from "react";
 import Products from "../components/Products";
-
+import Router from "next/router";
 
 export default function Home(data) {
+  const [islogged, setIsLogged] = useState(true);
+
+  const logOut = () => {
+    if (!islogged) {
+      setIsLogged(false);
+    } else {
+      localStorage.removeItem("token");
+      Router.push("/login");
+    }
+  };
 
   return (
     <div className="page-content">
       <title>Mi Tienda</title>
       <div>
         <h1 className="page-content">Ecommerce APP</h1>
-        
         <Products data={data} />
       </div>
       <div>
@@ -16,6 +26,9 @@ export default function Home(data) {
       </div>
       <div>
         <a href="/carrito">Ver carrito</a>
+      </div>
+      <div>
+        <button onClick={() => logOut()}>Cerrar Sesión</button>
       </div>
     </div>
   );
@@ -30,7 +43,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       data,
-      protected: true
+      protected: true,
     },
   };
 }

@@ -191,12 +191,12 @@ tr:hover {background-color: coral;}
 
 .button {
   display: inline-block;
-  border-radius: 10px;
+  border-radius: 8px;
   background-color: #f4511e;
   border: none;
   color: #FFFFFF;
   text-align: center;
-  font-size: 23px;
+  font-size: 15px;
   padding: 20px;
   width: 150px;
   transition: all 0.5s;
@@ -206,4 +206,32 @@ tr:hover {background-color: coral;}
 
 .button:hover{
   background-color: #4CAF50;
+}
+
+input {
+  font-size: 22px;
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 5px 10px;
+  background: none;
+  background-image: none;
+  border: 1px solid ;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  transition: all 0.5s ease;
+  border-radius: 5px;
+}
+
+.contenido-tab {
+  display: block;
+}
+
+.contenedor-tabs {
+  list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+    background-color: red;
 }

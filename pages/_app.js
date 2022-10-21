@@ -7,17 +7,16 @@ import Router from "next/router";
 function MyApp({ Component, pageProps }) {
 
   const [token, setToken] = useState(null);
-
+  
   useEffect(() => {
 
     const getToken = localStorage.getItem("token");
 
     if (getToken) {
-      Router.push("/");
       setToken(getToken);
-    } else if (!token) {
-      Router.push("/login");
-    }
+      } else if (!token) {
+      Router.push("/login")
+    }  
   }, []);
 
   if (pageProps.protected && !token) {
