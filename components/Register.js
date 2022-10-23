@@ -20,7 +20,7 @@ const Register = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res)
+        alert(res.message)
         Router.push("/login")
       });
     };

@@ -2,9 +2,7 @@ import Router from "next/router";
 import { useEffect, useState } from "react";
 
 const Login = () => {
-
-  const getToken = async() => {
-
+  const getToken = async () => {
     const data = {
       email: email.value,
       password: password.value,
@@ -20,10 +18,15 @@ const Login = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        localStorage.setItem("token", res.token)
-        Router.push("/");
+        if (res.message === "Logged In") {
+          alert(res.message)
+          localStorage.setItem("token", res.token);
+          Router.push("/");
+        } else {
+          alert(res.message)
+        }
       });
-    };
+  };
 
   return (
     <div className="contenido-tab">
