@@ -2,52 +2,62 @@ import { useState, useEffect } from "react";
 
 let initialValue = 0;
 
-const Carrito = ( columns) => {
+const Carrito = (columns) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const result = JSON.parse(localStorage.getItem("carrito"));
-    setProducts(result);
-  }, []);
+    try {
+      const result = JSON.parse(localStorage.getItem("carrito"));
+      setProducts(result);
+    } catch (err) {
+      // 👇️ SyntaxError: Unexpected end of JSON input
+      console.log("error", err);
+    }
+    }, []);
 
   const printColumnsField = (items, field) => {
-    if(field.includes('.')) {
-      const objectField = field.split('.')
-      return items[objectField[0]][objectField[1]]
+    if (field.includes(".")) {
+      const objectField = field.split(".");
+      return items[objectField[0]][objectField[1]];
     } else {
-      return items[field]
+      return items[field];
     }
-  }
+  };
 
-  const setColumns = Object.values(columns)[0]
+  const setColumns = Object.values(columns)[0];
 
-  const items = products.map(({ name, quantity,price}) => ({
+  const items = products.map(({ name, quantity, price }) => ({
     name,
     price,
-    quantity
-  }))
-  
+    quantity,
+  }));
+
   const countItems = products.filter((e) => e.name);
-  
+
   const firstPrice = Object.values(countItems).reduce(
     (acc, { price }) => acc + price,
     0
   );
-  
+
   const taxes = firstPrice * 0.21;
-  
+
   const total = firstPrice + taxes;
-  
+
   const date = new Date();
-  
+
   const order = {
     items,
     subtotal: firstPrice,
     taxes,
     total,
-    date
+    date,
+  };
+
+  const deleteProduct = (id) => {
+    const filtered = products.filter(e => e._id !== id)
+    setProducts(filtered)
+    localStorage.setItem("carrito",filtered)
   }
-  console.log(order);
 
   const deleteOrder = () => {
     const product = JSON.parse(localStorage.getItem("carrito"));
@@ -79,8 +89,6 @@ const Carrito = ( columns) => {
 
   return (
     <div>
-      <h1 className="page-content">Mi Carrito</h1>
-      <a href="/">Volver</a>
       <div>
         <div>
           <button onClick={() => deleteOrder()}>Vaciar carrito</button>
@@ -94,10 +102,14 @@ const Carrito = ( columns) => {
             </tr>
           </thead>
           <tbody>
-          {products.map((e, index) => 
-            <tr key={index}>
-              {setColumns.map(header => (<td>{printColumnsField(e, header.field)}</td>))}
-            </tr>)}
+            {products.map((e, index) => (
+              <tr key={index}>
+                {setColumns.map((header) => (
+                  <td>{printColumnsField(e, header.field)}</td>
+                ))}
+                <button onClick={() => deleteProduct(e._id)}>Eliminar</button>
+              </tr>
+            ))}
           </tbody>
         </table>
         <p>Total a Pagar: $ {totalPrice}</p>
@@ -110,7 +122,5 @@ const Carrito = ( columns) => {
     </div>
   );
 };
-
-
 
 export default Carrito;
