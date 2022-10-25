@@ -11,21 +11,19 @@ const showProducts = (data) => {
 
   const addNewProduct = (productId, name) => {
     const product = productList.find((e) => e._id === productId);
-
+        
     if (checkProductExist(productId)) {
       product.quantity++;
-      product.price *= product.quantity;
     } else {
       carrito.push(product);
       product.quantity = 1;
-      product.price *= product.quantity;
     }
-    localStorage.setItem("carrito", JSON.stringify(carrito))
+    localStorage.setItem("carrito", JSON.stringify(carrito));
     console.log(carrito);
   };
 
   const checkProductExist = (productId) => {
-    return carrito.map((e) => e._id).includes(productId)
+    return carrito.map((e) => e._id).includes(productId);
   };
 
   return (

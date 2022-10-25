@@ -31,7 +31,7 @@ const carrito = (columns) => {
           columns={[
             { id: 1, field: "quantity", headerName: "Cantidad" },
             { id: 2, field: "name", headerName: "Producto" },
-            { id: 3, field: "price", headerName: "Precio" },
+            { id: 3, field: "price", headerName: "Precio Unitario" },
           ]}
         ></Carrito>
       </div>

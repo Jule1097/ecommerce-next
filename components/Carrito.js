@@ -13,7 +13,7 @@ const Carrito = (columns) => {
       // 👇️ SyntaxError: Unexpected end of JSON input
       console.log("error", err);
     }
-    }, []);
+  }, []);
 
   const printColumnsField = (items, field) => {
     if (field.includes(".")) {
@@ -54,10 +54,16 @@ const Carrito = (columns) => {
   };
 
   const deleteProduct = (id) => {
-    const filtered = products.filter(e => e._id !== id)
-    setProducts(filtered)
-    localStorage.setItem("carrito",filtered)
-  }
+    const product = products.find((e) => e._id === id);
+
+    if (product.quantity > 1) {
+      product.quantity--;
+    } else if (product.quantity === 1) {
+      const filtered = products.filter((e) => e._id !== id);
+      setProducts(filtered);
+      localStorage.setItem("carrito", filtered);
+    }
+  };
 
   const deleteOrder = () => {
     const product = JSON.parse(localStorage.getItem("carrito"));
