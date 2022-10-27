@@ -54,18 +54,12 @@ const Carrito = (columns) => {
   };
 
   const deleteProduct = (id) => {
-    const product = products.find((e) => e._id === id);
-
-    if (product.quantity > 1) {
-      product.quantity--;
-    } else if (product.quantity === 1) {
-      const filtered = products.filter((e) => e._id !== id);
-      setProducts(filtered);
-      localStorage.setItem("carrito", filtered);
-    }
+    const deletedProduct = products.filter((e) => e._id !== id);
+    setProducts(deletedProduct);
+    localStorage.setItem("carrito", deletedProduct);
   };
 
-  const deleteOrder = () => {
+  const clearCarrito = () => {
     const product = JSON.parse(localStorage.getItem("carrito"));
     if (!product) {
       setProducts([]);
@@ -86,47 +80,55 @@ const Carrito = (columns) => {
       .then((res) => console.log(res));
   };
 
-  const price = products.map((e) => e.price);
+  const price = products.map((e) => e.price * e.quantity);
 
   const totalPrice = price.reduce(
     (previousValue, currentValue) => previousValue + currentValue,
     initialValue
   );
 
-  return (
-    <div>
+  if (products.length >= 1) {
+    return (
       <div>
         <div>
-          <button onClick={() => deleteOrder()}>Vaciar carrito</button>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              {setColumns.map((title) => (
-                <th>{title.headerName}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((e, index) => (
-              <tr key={index}>
-                {setColumns.map((header) => (
-                  <td>{printColumnsField(e, header.field)}</td>
+          <div>
+            <button onClick={() => clearCarrito()}>Vaciar carrito</button>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                {setColumns.map((title) => (
+                  <th>{title.headerName}</th>
                 ))}
-                <button onClick={() => deleteProduct(e._id)}>Eliminar</button>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <p>Total a Pagar: $ {totalPrice}</p>
-        <div className="page-content">
-          <button className="button" onClick={() => sendOrders()}>
-            Pagar
-          </button>
+            </thead>
+            <tbody>
+              {products.map((e, index) => (
+                <tr key={index}>
+                  {setColumns.map((header) => (
+                    <td>{printColumnsField(e, header.field)}</td>
+                  ))}
+                  <button onClick={() => deleteProduct(e._id)}>Eliminar</button>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <p>Total a Pagar: $ {totalPrice}</p>
+          <div className="page-content">
+            <button className="button" onClick={() => sendOrders()}>
+              Pagar
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else if (!products || products.length === 0) {
+    return (
+      <div>
+        <h2>Carrito Vacio</h2>
+      </div>
+    );
+  }
 };
 
 export default Carrito;

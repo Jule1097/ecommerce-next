@@ -14,15 +14,6 @@ const carrito = (columns) => {
     }
   }, []);
 
-  if (products.length === 0) {
-    return (
-      <div>
-        <h1 className="page-content">Mi Carrito</h1>
-        <a href="/">Volver</a>
-        <h2>Carrito Vacio</h2>
-      </div>
-    )
-  } else {
     return (
       <div>
         <h1 className="page-content">Mi Carrito</h1>
@@ -36,7 +27,6 @@ const carrito = (columns) => {
         ></Carrito>
       </div>
     );
-  }
 };
 
 export default carrito;
