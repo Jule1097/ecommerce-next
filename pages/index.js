@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Products from "../components/Products";
 import Router from "next/router";
+import NewProduct from "../components/NewProduct";
+
 
 export default function Home(data) {
   const [islogged, setIsLogged] = useState(true);
@@ -14,11 +16,15 @@ export default function Home(data) {
     }
   };
 
+ 
+
   return (
     <div className="page-content">
       <title>Mi Tienda</title>
       <div>
         <h1 className="page-content">Ecommerce APP</h1>
+        <button>Probando</button>
+        {/* <NewProduct></NewProduct> */}
         <Products data={data} />
       </div>
       <div>
@@ -26,6 +32,9 @@ export default function Home(data) {
       </div>
       <div>
         <a href="/carrito">Ver carrito</a>
+      </div>
+      <div>
+        
       </div>
       <div>
         <button onClick={() => logOut()}>Cerrar Sesión</button>
