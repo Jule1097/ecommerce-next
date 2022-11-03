@@ -1,3 +1,4 @@
+import Router from "next/router";
 import { Fragment, useEffect, useState } from "react";
 
 let carrito = [];
@@ -6,14 +7,16 @@ const showProducts = (data) => {
   const products = data.data.data;
 
   const [productList, setProducts] = useState([]);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
+    const getToken = localStorage.getItem("token");
     setProducts(products);
+    setToken(getToken);
   }, []);
 
   const productsCategories = (category) => {
-    const findCategory = products.filter((e) => e.category === category);
-
+    const findCategory = productList.filter((e) => e.category === category);
     setProducts(findCategory);
   };
 
@@ -38,14 +41,28 @@ const showProducts = (data) => {
     return carrito.map((e) => e._id).includes(productId);
   };
 
+  const deleteProductFromDB =  (id) => {
+    fetch(`http://localhost:4000/api/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": token,
+      },
+    }).then(() => {
+      const newData = productList.filter(e => e._id !== id)
+      setProducts(newData)
+    })
+  };
+
   return (
     <Fragment>
       <h4>
         Categorias
-        {products.map((e) => (
+        {productList.map((e) => (
           <li key={e._id} onClick={() => productsCategories(e.category)}>
             {e.category}
-          </li>  
+          </li>
         ))}
       </h4>
       <button onClick={() => deleteFilters()}>Borrar Filtros</button>
@@ -60,6 +77,8 @@ const showProducts = (data) => {
           >
             Agregar Producto
           </button>
+          <button onClick={() => deleteProductFromDB(e._id)}>Eliminar</button>
+          <button>Editar</button>
         </div>
       ))}
     </Fragment>
