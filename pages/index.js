@@ -6,6 +6,11 @@ import NewProduct from "../components/NewProduct";
 
 export default function Home(data) {
   const [islogged, setIsLogged] = useState(true);
+  const [createproduct, setCreateProduct] = useState(false);
+
+  const handleCreateButton = () => {
+    setCreateProduct(true);
+  }
 
   const logOut = () => {
     if (!islogged) {
@@ -16,16 +21,13 @@ export default function Home(data) {
     }
   };
 
- 
-
   return (
     <div className="page-content">
       <title>Mi Tienda</title>
       <div>
         <h1 className="page-content">Ecommerce APP</h1>
-        <button>Probando</button>
-        {/* <NewProduct></NewProduct> */}
-        <Products data={data} />
+        <button onClick={() => handleCreateButton()}>Añadir Producto</button>
+        {createproduct ? <NewProduct setCreateProduct={setCreateProduct}></NewProduct> : <Products data={data} />}     
       </div>
       <div>
         <a href="/orders">Ver ordenes</a>
@@ -33,8 +35,7 @@ export default function Home(data) {
       <div>
         <a href="/carrito">Ver carrito</a>
       </div>
-      <div>
-        
+      <div>  
       </div>
       <div>
         <button onClick={() => logOut()}>Cerrar Sesión</button>

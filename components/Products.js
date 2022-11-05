@@ -8,6 +8,7 @@ const showProducts = (data) => {
 
   const [productList, setProducts] = useState([]);
   const [token, setToken] = useState("");
+  
 
   useEffect(() => {
     const getToken = localStorage.getItem("token");
@@ -21,7 +22,7 @@ const showProducts = (data) => {
   };
 
   const deleteFilters = () => {
-    setProducts(products);
+    setProducts(productList);
   };
 
   const addNewProduct = (productId, name) => {
@@ -59,8 +60,8 @@ const showProducts = (data) => {
     <Fragment>
       <h4>
         Categorias
-        {productList.map((e) => (
-          <li key={e._id} onClick={() => productsCategories(e.category)}>
+        {products.map((e) => (
+          <li onClick={() => productsCategories(e.category)}>
             {e.category}
           </li>
         ))}
