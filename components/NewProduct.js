@@ -1,7 +1,7 @@
 import Router  from "next/router";
 import { useEffect, useState } from "react";
 
-const NewProduct = () => {
+const NewProduct = ({setCreateProduct}) => {
   const [token, setToken] = useState("");
 
   useEffect(() => {
@@ -30,9 +30,13 @@ const NewProduct = () => {
       .then((res) => res.json())
       .then((res) => {
         alert(res.message);
-        Router.push("/")
       });
-  };
+
+    };
+
+    const handleBackButton = () => {
+      setCreateProduct(false)
+    }
 
   return (
     <form>
@@ -68,6 +72,7 @@ const NewProduct = () => {
         type="button"
         className="button button-block"
         value="Cancelar"
+        onClick={() => handleBackButton()}
       ></input>
     </form>
   );
