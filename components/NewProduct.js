@@ -1,14 +1,6 @@
-import Router  from "next/router";
-import { useEffect, useState } from "react";
 
-const NewProduct = ({setCreateProduct}) => {
-  const [token, setToken] = useState("");
-
-  useEffect(() => {
-    const getToken = localStorage.getItem("token");
-    setToken(getToken);
-  }, []);
-
+const NewProduct = (props) => {
+  
   const createProduct = () => {
     const data = {
       name: nombre.value,
@@ -23,7 +15,7 @@ const NewProduct = ({setCreateProduct}) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "x-access-token": token,
+        "x-access-token": props.token,
       },
       body: JSON.stringify(data),
     })
@@ -35,8 +27,8 @@ const NewProduct = ({setCreateProduct}) => {
     };
 
     const handleBackButton = () => {
-      setCreateProduct(false)
-    }
+      props.setCreateProduct(false)
+    };
 
   return (
     <form>

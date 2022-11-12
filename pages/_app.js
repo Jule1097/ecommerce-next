@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import Router from "next/router";
 
+
 function MyApp({ Component, pageProps }) {
 
   const [token, setToken] = useState(null);
@@ -24,9 +25,11 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <TokenContext.Provider value={token}>
+    
+      <TokenContext.Provider value={token}>
       <Component {...pageProps} />
     </TokenContext.Provider>
+
   );
 }
 

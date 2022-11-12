@@ -1,19 +1,17 @@
-import Router from "next/router";
 import { Fragment, useEffect, useState } from "react";
+import { useRouter } from 'next/router'
+
 
 let carrito = [];
 
-const showProducts = (data) => {
-  const products = data.data.data;
+const showProducts = (props) => {
+  const router = useRouter()
 
+  const products = props.data.data;
   const [productList, setProducts] = useState([]);
-  const [token, setToken] = useState("");
-  
 
   useEffect(() => {
-    const getToken = localStorage.getItem("token");
     setProducts(products);
-    setToken(getToken);
   }, []);
 
   const productsCategories = (category) => {
@@ -42,18 +40,18 @@ const showProducts = (data) => {
     return carrito.map((e) => e._id).includes(productId);
   };
 
-  const deleteProductFromDB =  (id) => {
+  const deleteProductFromDB = (id) => {
     fetch(`http://localhost:4000/api/products/${id}`, {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "x-access-token": token,
+        "x-access-token": props.token,
       },
     }).then(() => {
-      const newData = productList.filter(e => e._id !== id)
-      setProducts(newData)
-    })
+      const newData = productList.filter((e) => e._id !== id);
+      setProducts(newData);
+    });
   };
 
   return (
@@ -61,9 +59,7 @@ const showProducts = (data) => {
       <h4>
         Categorias
         {products.map((e) => (
-          <li onClick={() => productsCategories(e.category)}>
-            {e.category}
-          </li>
+          <li onClick={() => productsCategories(e.category)}>{e.category}</li>
         ))}
       </h4>
       <button onClick={() => deleteFilters()}>Borrar Filtros</button>
@@ -76,10 +72,12 @@ const showProducts = (data) => {
             className="button-add"
             onClick={() => addNewProduct(e._id, e.name)}
           >
-            Agregar Producto
+            Agregar al Carrito
           </button>
           <button onClick={() => deleteProductFromDB(e._id)}>Eliminar</button>
-          <button>Editar</button>
+          <button onClick={() => router.push({
+            pathname:`/products/${e._id}`
+          })}>Editar</button>
         </div>
       ))}
     </Fragment>
