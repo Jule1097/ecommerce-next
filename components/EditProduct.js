@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Router } from "react-router";
+import { useRouter } from 'next/router'
 
 const EditProduct = (props) => {
   const [product, setProduct] = useState([]);
+  const router = useRouter()
 
   useEffect(() => {
     fetch(`http://localhost:4000/api/products/${props.id}`, {
@@ -40,7 +41,7 @@ const EditProduct = (props) => {
       .then((res) => res.json())
       .then((res) => {
         alert(res.message);
-        Router.push("/");
+        router.push({pathname:"/"});
       });
   };
 
@@ -118,7 +119,7 @@ const EditProduct = (props) => {
         type="button"
         className="button button-block"
         value="Cancelar"
-        onClick={() => handleBackButton()}
+        onClick={() => router.push({pathname:"/"})}
       ></input>
     </form>
   );
