@@ -1,8 +1,8 @@
 import Router from "next/router";
-import { useEffect, useState } from "react";
 
 const Login = () => {
-  const getToken = async () => {
+
+  const getTokenAndUsers = async () => {
     const data = {
       email: email.value,
       password: password.value,
@@ -19,11 +19,12 @@ const Login = () => {
       .then((res) => res.json())
       .then((res) => {
         if (res.message === "Logged In") {
-          alert(res.message)
+          alert(res.message);
           localStorage.setItem("token", res.token);
+          localStorage.setItem("userRole", res.userRole[0].name)
           Router.push("/");
         } else {
-          alert(res.message)
+          alert(res.message);
         }
       });
   };
@@ -46,7 +47,7 @@ const Login = () => {
           type="button"
           className="button button-block"
           value="Iniciar Sesión"
-          onClick={() => getToken()}
+          onClick={() => getTokenAndUsers()}
         ></input>
       </form>
     </div>

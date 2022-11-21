@@ -3,7 +3,6 @@ import Products from "../components/Products";
 import Router from "next/router";
 import NewProduct from "../components/NewProduct";
 
-
 export default function Home(data) {
   const [islogged, setIsLogged] = useState(true);
   const [createproduct, setCreateProduct] = useState(false);
@@ -23,9 +22,12 @@ export default function Home(data) {
       setIsLogged(false);
     } else {
       localStorage.removeItem("token");
+      localStorage.removeItem("userRole");
       Router.push("/login");
     }
   };
+
+  
 
   return (
     <div className="page-content">
@@ -41,7 +43,6 @@ export default function Home(data) {
         ) : (
           <Products data={data} token={token} />
         )}
-        
       </div>
       <div>
         <a href="/orders">Ver ordenes</a>
