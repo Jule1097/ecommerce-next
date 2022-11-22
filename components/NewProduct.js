@@ -1,5 +1,7 @@
+import { useRouter } from 'next/router'
 
 const NewProduct = (props) => {
+  const router = useRouter()
   
   const createProduct = () => {
     const data = {
@@ -26,10 +28,7 @@ const NewProduct = (props) => {
 
     };
 
-    const handleBackButton = () => {
-      props.setCreateProduct(false)
-    };
-
+    
   return (
     <form>
       <div>
@@ -64,7 +63,7 @@ const NewProduct = (props) => {
         type="button"
         className="button button-block"
         value="Cancelar"
-        onClick={() => handleBackButton()}
+        onClick={() => router.push({pathname:"/"})}
       ></input>
     </form>
   );

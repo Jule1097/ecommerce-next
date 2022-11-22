@@ -1,21 +1,17 @@
 import { useState, useEffect } from "react";
 import Products from "../components/Products";
 import Router from "next/router";
-import NewProduct from "../components/NewProduct";
+import { useRouter } from 'next/router'
 
 export default function Home(data) {
   const [islogged, setIsLogged] = useState(true);
-  const [createproduct, setCreateProduct] = useState(false);
   const [token, setToken] = useState("");
+  const router = useRouter()
 
   useEffect(() => {
     const getToken = localStorage.getItem("token");
     setToken(getToken);
-  }, []);
-
-  const handleCreateButton = () => {
-    setCreateProduct(true);
-  };
+  }, []); 
 
   const logOut = () => {
     if (!islogged) {
@@ -27,22 +23,13 @@ export default function Home(data) {
     }
   };
 
-  
-
   return (
     <div className="page-content">
       <title>Mi Tienda</title>
       <div>
         <h1 className="page-content">Ecommerce APP</h1>
-        <button onClick={() => handleCreateButton()}>Añadir Producto</button>
-        {createproduct ? (
-          <NewProduct
-            setCreateProduct={setCreateProduct}
-            token={token}
-          ></NewProduct>
-        ) : (
-          <Products data={data} token={token} />
-        )}
+        <button onClick={() => router.push({pathname:"/products"})}>Añadir Producto</button>
+        <Products data={data} token={token} />
       </div>
       <div>
         <a href="/orders">Ver ordenes</a>
