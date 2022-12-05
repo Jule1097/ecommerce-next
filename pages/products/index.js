@@ -1,4 +1,5 @@
 import NewProduct from "../../components/NewProduct";
+import { useEffect, useState } from "react";
 
 const addProducts = () => {
   const [token, setToken] = useState("");
