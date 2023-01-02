@@ -6,46 +6,16 @@ import { useRouter } from "next/router";
 export default function Home(data) {
   const [islogged, setIsLogged] = useState(true);
   const [token, setToken] = useState("");
-  const [rolePermissions, setRolePermissions] = useState([]);
-
   const router = useRouter();
 
-  const roles = [
-    {
-      Role: "admin",
-      Permissions: [
-        {
-          Models: "Products",
-          Actions: ["GET", "POST", "PUT", "DELETE"],
-        },
-        {
-          Models: "Orders",
-          Actions: ["GET", "DELETE"],
-        },
-      ],
-    },
-    {
-      Role: "user",
-      Permissions: [
-        {
-          Models: "Products",
-          Actions: ["GET"],
-        },
-      ],
-    },
-  ];
+ 
 
   useEffect(() => {
     const getToken = localStorage.getItem("token");
     setToken(getToken);
-
-    const getRole = localStorage.getItem("userRole");
-
-    const permissionsByRole = roles.find((e) => e.Role === getRole).Permissions;
-    setRolePermissions(permissionsByRole);
   }, []);
 
-  console.log(rolePermissions);
+  
 
   const logOut = () => {
     if (!islogged) {
