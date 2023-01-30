@@ -1,17 +1,23 @@
 import { Fragment, useEffect, useState } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
+import havePermissions from "../helpers/havePermissions";
 
 let carrito = [];
 
 const showProducts = (props) => {
-  const router = useRouter()
-
-  const products = props.data.data;
+  const [role, setRole] = useState("");
   const [productList, setProducts] = useState([]);
 
+  const router = useRouter();
+
+  const products = props.data.data;
+ 
   useEffect(() => {
     setProducts(products);
+    const userRole = localStorage.getItem("userRole");
+    setRole(userRole);
+
   }, []);
 
   const productsCategories = (category) => {
@@ -54,34 +60,68 @@ const showProducts = (props) => {
     });
   };
 
-  return (
-    <Fragment>
-      <h4>
-        Categorias
-        {products.map((e) => (
-          <li onClick={() => productsCategories(e.category)}>{e.category}</li>
+
+  if (!havePermissions(router.pathname,role) && router.pathname !== "/login" && router.pathname !== "/carrito") {
+    return (
+      <Fragment>
+        <h4>
+          Categorias
+          {products.map((e) => (
+            <li onClick={() => productsCategories(e.category)}>{e.category}</li>
+          ))}
+        </h4>
+        <button onClick={() => deleteFilters()}>Borrar Filtros</button>
+        {productList.map((e) => (
+          <div key={e._id} className="product-container">
+            <h3>{e.name}</h3>
+            <img src={e.image} />
+            <h2>$ {e.price}</h2>
+            <button
+              className="button-add"
+              onClick={() => addNewProduct(e._id, e.name)}
+            >
+              Agregar al Carrito
+            </button>
+          </div>
         ))}
-      </h4>
-      <button onClick={() => deleteFilters()}>Borrar Filtros</button>
-      {productList.map((e) => (
-        <div key={e._id} className="product-container">
-          <h3>{e.name}</h3>
-          <img src={e.image} />
-          <h2>$ {e.price}</h2>
-          <button
-            className="button-add"
-            onClick={() => addNewProduct(e._id, e.name)}
-          >
-            Agregar al Carrito
-          </button>
-          <button onClick={() => deleteProductFromDB(e._id)}>Eliminar</button>
-          <button onClick={() => router.push({
-            pathname:`/products/${e._id}`
-          })}>Editar</button>
-        </div>
-      ))}
-    </Fragment>
-  );
+      </Fragment>
+    );
+  } else {
+    return (
+      <Fragment>
+        <h4>
+          Categorias
+          {products.map((e) => (
+            <li onClick={() => productsCategories(e.category)}>{e.category}</li>
+          ))}
+        </h4>
+        <button onClick={() => deleteFilters()}>Borrar Filtros</button>
+        {productList.map((e) => (
+          <div key={e._id} className="product-container">
+            <h3>{e.name}</h3>
+            <img src={e.image} />
+            <h2>$ {e.price}</h2>
+            <button
+              className="button-add"
+              onClick={() => addNewProduct(e._id, e.name)}
+            >
+              Agregar al Carrito
+            </button>
+            <button onClick={() => deleteProductFromDB(e._id)}>Eliminar</button>
+            <button
+              onClick={() =>
+                router.push({
+                  pathname: `/products/${e._id}`,
+                })
+              }
+            >
+              Editar
+            </button>
+          </div>
+        ))}
+      </Fragment>
+    );
+  }
 };
 
 export default showProducts;
