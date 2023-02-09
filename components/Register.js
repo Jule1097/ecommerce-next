@@ -1,30 +1,9 @@
-import Router from "next/router";
+
+import useUser from "../hooks/useUser";
 
 const Register = () => {
 
-  const signUp = async () => {
-
-    const data = {
-      username: username.value,
-      email: email.value,
-      password: password.value
-    }
-
-    await fetch("http://localhost:4000/api/auth/signup", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        alert(res.message)
-        Router.push("/login")
-      });
-    };
-
+  const {signUp} = useUser()
 
   return (
     <div className="contenido-tab">

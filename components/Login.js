@@ -1,33 +1,8 @@
-import Router from "next/router";
+import useUser from "../hooks/useUser";
 
 const Login = () => {
 
-  const getTokenAndUsers = async () => {
-    const data = {
-      email: email.value,
-      password: password.value,
-    };
-
-    await fetch("http://localhost:4000/api/auth/login", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message === "Logged In") {
-          alert(res.message);
-          localStorage.setItem("token", res.token);
-          localStorage.setItem("userRole", res.userRole[0].name)
-          Router.push("/");
-        } else {
-          alert(res.message);
-        }
-      });
-  };
+  const {signIn} = useUser()
 
   return (
     <div className="contenido-tab">
@@ -47,11 +22,11 @@ const Login = () => {
           type="button"
           className="button button-block"
           value="Iniciar Sesión"
-          onClick={() => getTokenAndUsers()}
+          onClick={() => signIn(email,password)}
         ></input>
       </form>
     </div>
-  );
-};
+  )};
+
 
 export default Login;
