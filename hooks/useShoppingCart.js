@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 
 let initialValue = 0;
 
-const Carrito = (columns) => {
-  const [products, setProducts] = useState([]);
+const useShoppingCart = (columns) => {
+  const [shippingItems, setShippingItems] = useState([]);
 
   useEffect(() => {
     try {
       const result = JSON.parse(localStorage.getItem("carrito"));
-      setProducts(result);
+      setShippingItems(result);
     } catch (err) {
       // 👇️ SyntaxError: Unexpected end of JSON input
       console.log("error", err);
@@ -26,13 +26,13 @@ const Carrito = (columns) => {
 
   const setColumns = Object.values(columns)[0];
 
-  const items = products.map(({ name, quantity, price }) => ({
+  const items = shippingItems.map(({ name, quantity, price }) => ({
     name,
     price,
     quantity,
   }));
 
-  const countItems = products.filter((e) => e.name);
+  const countItems = shippingItems.filter((e) => e.name);
 
   const firstPrice = Object.values(countItems).reduce(
     (acc, { price }) => acc + price,
@@ -54,15 +54,15 @@ const Carrito = (columns) => {
   };
 
   const deleteProduct = (id) => {
-    const deletedProduct = products.filter((e) => e._id !== id);
-    setProducts(deletedProduct);
+    const deletedProduct = shippingItems.filter((e) => e._id !== id);
+    setShippingItems(deletedProduct);
     localStorage.setItem("carrito", deletedProduct);
   };
 
   const clearCarrito = () => {
     const product = JSON.parse(localStorage.getItem("carrito"));
     if (!product) {
-      setProducts([]);
+      setShippingItems([]);
     } else {
       localStorage.removeItem("carrito");
     }
@@ -80,55 +80,22 @@ const Carrito = (columns) => {
       .then((res) => console.log(res));
   };
 
-  const price = products.map((e) => e.price * e.quantity);
+  const price = shippingItems.map((e) => e.price * e.quantity);
 
   const totalPrice = price.reduce(
     (previousValue, currentValue) => previousValue + currentValue,
     initialValue
   );
 
-  if (products.length >= 1) {
-    return (
-      <div>
-        <div>
-          <div>
-            <button onClick={() => clearCarrito()}>Vaciar carrito</button>
-          </div>
-          <table>
-            <thead>
-              <tr>
-                {setColumns.map((title) => (
-                  <th>{title.headerName}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((e, index) => (
-                <tr key={index}>
-                  {setColumns.map((header) => (
-                    <td>{printColumnsField(e, header.field)}</td>
-                  ))}
-                  <button onClick={() => deleteProduct(e._id)}>Eliminar</button>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <p>Total a Pagar: $ {totalPrice}</p>
-          <div className="page-content">
-            <button className="button" onClick={() => sendOrders()}>
-              Pagar
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  } else if (!products || products.length === 0) {
-    return (
-      <div>
-        <h2>Carrito Vacio</h2>
-      </div>
-    );
-  }
+return {
+    shippingItems,
+    setColumns,
+    totalPrice,
+    printColumnsField,
+    deleteProduct,
+    clearCarrito,
+    sendOrders
+}
 };
 
-export default Carrito;
+export default useShoppingCart;

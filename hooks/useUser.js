@@ -2,7 +2,8 @@ import Router from "next/router";
 import { useState } from "react";
 
 const useUser = () => {
-  const [islogged, setIsLogged] = useState(true);
+  const [isLogged, setIsLogged] = useState(true);
+  const [token, setToken] = useState(null);
 
   const signIn = async (email, password) => {
     const data = {
@@ -31,6 +32,15 @@ const useUser = () => {
       });
   };
 
+  const checkToken = () => {
+      const getToken = localStorage.getItem("token");
+      if(getToken)  {
+        setToken(getToken);
+      } else if (!getToken) {
+        Router.push("/login");
+      }
+  }
+
   const signUp = async () => {
     const data = {
       username: username.value,
@@ -54,7 +64,7 @@ const useUser = () => {
     };
 
   const logOut = () => {
-      if (!islogged) {
+      if (!isLogged) {
         setIsLogged(false);
       } else {
         localStorage.removeItem("token");
@@ -66,7 +76,10 @@ const useUser = () => {
   return {
     signIn,
     signUp,
-    logOut
+    logOut,
+    checkToken,
+    token,
+    isLogged
   }
 };
 

@@ -1,34 +1,11 @@
 import { useRouter } from 'next/router'
+import useProducts from '../hooks/useProducts';
 
 const NewProduct = (props) => {
   const router = useRouter()
-  
-  const createProduct = () => {
-    const data = {
-      name: nombre.value,
-      price: price.value,
-      image: image.value,
-      stock: stock.value,
-      category: category.value,
-    };
 
-    fetch("http://localhost:4000/api/products", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "x-access-token": props.token,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        alert(res.message);
-      });
-
-    };
-
-    
+  const { createProduct } = useProducts(props);
+      
   return (
     <form>
       <div>
@@ -57,13 +34,13 @@ const NewProduct = (props) => {
         type="button"
         className="button button-block"
         value="Crear Producto"
-        onClick={() => createProduct()}
+        onClick={() => createProduct(props)}
       ></input>
       <input
         type="button"
         className="button button-block"
         value="Cancelar"
-        onClick={() => router.push({pathname:"/"})}
+        onClick={() => router.push({pathname:"/store"})}
       ></input>
     </form>
   );

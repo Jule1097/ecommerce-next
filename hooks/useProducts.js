@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/router'
 
 let carrito = [];
 
 const useProducts = (props) => {
   const products = props.data.data;
-  const [productList, setProducts] = useState([]);
+  const [productList, setProducts] = useState(products);
+  const [productInfo, setProductInfo] = useState([]);
   const [role, setRole] = useState("");
+  const router = useRouter();
 
-  useEffect(() => {
-    setProducts(products);
+  useEffect(() => {  
     const userRole = localStorage.getItem("userRole");
     setRole(userRole);
-  }, []);
+  });
 
   const productsCategories = (category) => {
     const findCategory = productList.filter((e) => e.category === category);
@@ -53,14 +55,85 @@ const useProducts = (props) => {
     });
   };
 
+  const createProduct = (props) => {
+    const data = {
+      name: nombre.value,
+      price: price.value,
+      image: image.value,
+      stock: stock.value,
+      category: category.value,
+    };
+
+    fetch("http://localhost:4000/api/products", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        alert(res.message);
+        router.push({ pathname: "/store"});
+      });
+    };
+
+    const getProductData = (props) => {
+
+       fetch(`http://localhost:4000/api/products/${props}`, {
+        method: "GET",
+        headers: {
+          "Content-type": "application-json",
+          Accept: "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+            console.log(res)   
+        })
+      };  
+  
+    const editProduct = (props) => {
+
+      const data = {
+        id: id.value,
+        name: nombre.value,
+        price: price.value,
+        image: image.value,
+        stock: stock.value,
+        category: category.value,
+      };
+  
+      fetch(`http://localhost:4000/api/products/${props.id}`, {
+        method: "PUT",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "x-access-token": props.token,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          alert(res.message);
+          router.push({ pathname: "/store"});
+        });
+    }
+
 
   return {
     productList,
     products,
+    productInfo,
     addNewProduct,
     deleteProductFromDB,
     productsCategories,
-    deleteFilters
+    deleteFilters,
+    createProduct,
+    getProductData,
+    editProduct
   }
 };
 

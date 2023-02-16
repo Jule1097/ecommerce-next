@@ -4,17 +4,12 @@ import { useRouter } from "next/router";
 import havePermissions from "../helpers/havePermissions";
 import useUser from "../hooks/useUser";
 
+
 export default function Home(data) {
 
-  const {logOut} = useUser()
-
-  const [token, setToken] = useState("");
+  const {logOut, token} = useUser()
+  
   const router = useRouter();
-
-  useEffect(() => {
-    const getToken = localStorage.getItem("token");
-    setToken(getToken);
-  }, []);
 
   if(havePermissions(router.pathname)) {
     return (

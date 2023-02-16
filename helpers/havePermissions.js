@@ -14,8 +14,10 @@ const havePermissions = (route) => {
 
     const getRole = localStorage.getItem("userRole");
 
-    const permissionsByRole = roles.find((e) => e.Role === getRole).Permissions;
-    setRolePermissions(permissionsByRole);
+    if(getRole) {
+      const permissionsByRole = roles.find((e) => e.Role === getRole).Permissions;
+      setRolePermissions(permissionsByRole);
+    }
   }, []);
 
   const roles = [

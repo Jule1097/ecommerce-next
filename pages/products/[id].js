@@ -1,19 +1,15 @@
 import EditProduct from "/components/EditProduct";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import useToken from "../../hooks/useToken";
 
-const products = () => {
-  const [token, setToken] = useState("");
+const products = (props) => {
 
-  useEffect(() => {
-    const getToken = localStorage.getItem("token");
-    setToken(getToken);
-  }, []);
+  const {token} = useToken
 
   const router = useRouter();
   const { id } = router.query;
 
-  return <EditProduct id={id} token={token}></EditProduct>;
+  return <EditProduct data={props} id={id} token={token}></EditProduct>;
 };
 
 export default products;

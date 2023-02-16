@@ -1,49 +1,11 @@
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router' 
+import useProducts from "../hooks/useProducts";
 
 const EditProduct = (props) => {
-  const [product, setProduct] = useState([]);
-  const router = useRouter()
+  const router = useRouter();
 
-  useEffect(() => {
-    fetch(`http://localhost:4000/api/products/${props.id}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application-json",
-        Accept: "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        setProduct(res);
-      });
-  }, []);
-
-  const sendEditProduct = async () =>  {
-    const data = {
-      id: id.value,
-      name: nombre.value,
-      price: price.value,
-      image: image.value,
-      stock: stock.value,
-      category: category.value,
-    };
-
-    await fetch(`http://localhost:4000/api/products/${props.id}`, {
-      method: "PUT",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "x-access-token": props.token,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        alert(res.message);
-        router.push({pathname:"/store"});
-      });
-  };
+  const { setProducts, productInfo, editProduct} = useProducts(props);
 
   return (
     <form>
@@ -60,8 +22,8 @@ const EditProduct = (props) => {
           required
           name="name"
           id="nombre"
-          value={product.name}
-          onChange={(e) => setProduct({ ...product, name: e.target.nombre })}
+          value={productInfo.name}
+          onChange={(e) => setProducts({ ...productInfo, name: e.target.nombre })}
         ></input>
         <label>
           Precio <span className="req"></span>
@@ -72,8 +34,8 @@ const EditProduct = (props) => {
           name="price"
           id="price"
           min="1"
-          value={product.price}
-          onChange={(e) => setProduct({ ...product, price: e.target.price })}
+          value={productInfo.price}
+          onChange={(e) => setProducts({ ...productInfo, price: e.target.price })}
         ></input>
         <label>
           Imagen <span className="req"></span>
@@ -83,8 +45,8 @@ const EditProduct = (props) => {
           required
           name="image"
           id="image"
-          value={product.image}
-          onChange={(e) => setProduct({ ...product, image: e.target.image })}
+          value={productInfo.image}
+          onChange={(e) => setProducts({ ...productInfo, image: e.target.image })}
         ></input>
         <label>
           Stock <span className="req"></span>
@@ -95,8 +57,8 @@ const EditProduct = (props) => {
           name="stock"
           id="stock"
           min="1"
-          value={product.stock}
-          onChange={(e) => setProduct({ ...product, stock: e.target.stock })}
+          value={productInfo.stock}
+          onChange={(e) => setProducts({ ...productInfo, stock: e.target.stock })}
         ></input>
       </div>
       <label>
@@ -107,13 +69,13 @@ const EditProduct = (props) => {
         required
         name="category"
         id="category"
-        value={product.category}
+        value={productInfo.category}
       ></input>
       <input
         type="button"
         className="button button-block"
         value="Guardar"
-        onClick={() => sendEditProduct()}
+        onClick={() => editProduct(props)}
       ></input>
       <input
         type="button"

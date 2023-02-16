@@ -8,7 +8,7 @@ import useProducts from "../hooks/useProducts";
 const Products = (props) => {
   const [role, setRole] = useState("");
   const router = useRouter();
-  const {productList,products,productsCategories,deleteFilters,addNewProduct,deleteProductFromDB} = useProducts(props)
+  const {productList,products,productsCategories,deleteFilters,addNewProduct,deleteProductFromDB,getProductData} = useProducts(props)
 
   if (!havePermissions(router.pathname,role) && router.pathname !== "/login" && router.pathname !== "/carrito") {
     return (
@@ -62,10 +62,10 @@ const Products = (props) => {
             </button>
             <button onClick={() => deleteProductFromDB(e._id)}>Eliminar</button>
             <button
-              onClick={() =>
+              onClick={() =>{getProductData(e._id);
                 router.push({
                   pathname: `/products/${e._id}`,
-                })
+                });}
               }
             >
               Editar

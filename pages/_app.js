@@ -1,23 +1,16 @@
 import "../styles/globals.css";
 import { TokenContext } from "../components/token";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-
+import { useEffect } from "react";
+import useUser from "../hooks/useUser";
 
 function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-  const [token, setToken] = useState(null);
+
+ const {checkToken, token } = useUser()
 
   useEffect(() => {
-    const getToken = localStorage.getItem("token");
-
-    if (getToken) {
-      setToken(getToken);
-    } else if (!token) {
-      router.push({ pathname: "/login" });
-    }
-  }, []);
-
+    checkToken()
+  }, [])
+  
   return (
     <TokenContext.Provider value={token}>
       <Component {...pageProps} />

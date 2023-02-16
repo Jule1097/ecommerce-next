@@ -1,19 +1,15 @@
 import NewProduct from "../../components/NewProduct";
-import { useEffect, useState } from "react";
+import useToken from "../../hooks/useToken";
 
 
-const addProducts = () => {
-  const [token, setToken] = useState("");
-
-  useEffect(() => {
-    const getToken = localStorage.getItem("token");
-    setToken(getToken);
-  }, []);
+const addProducts = (props) => {
+  
+  const { token } = useToken
 
   return (
     <div>
       <h1>Añadir Productos </h1>
-      <NewProduct token={token}></NewProduct>
+      <NewProduct data= {props} token={token}></NewProduct>
     </div>
   );
 };
