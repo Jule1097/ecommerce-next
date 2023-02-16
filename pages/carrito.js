@@ -6,6 +6,7 @@ const carrito = () => {
       <div>
         <h1 className="page-content">Mi Carrito</h1>
         <a href="/store">Volver</a>
+
         <ShoppingCart
           columns={[
             { id: 1, field: "quantity", headerName: "Cantidad" },

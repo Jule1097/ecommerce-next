@@ -1,15 +1,14 @@
-import { useState, useEffect } from "react";
 import Products from "../components/Products";
 import { useRouter } from "next/router";
 import havePermissions from "../helpers/havePermissions";
 import useUser from "../hooks/useUser";
-
 
 export default function Home(data) {
 
   const {logOut, token} = useUser()
   
   const router = useRouter();
+
 
   if(havePermissions(router.pathname)) {
     return (

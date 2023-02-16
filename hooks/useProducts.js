@@ -122,7 +122,6 @@ const useProducts = (props) => {
         });
     }
 
-
   return {
     productList,
     products,
@@ -133,7 +132,11 @@ const useProducts = (props) => {
     deleteFilters,
     createProduct,
     getProductData,
-    editProduct
+    editProduct,
+    addNewProduct,
+    deleteProductFromDB,
+    productsCategories,
+    deleteFilters
   }
 };
 

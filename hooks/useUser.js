@@ -33,20 +33,20 @@ const useUser = () => {
   };
 
   const checkToken = () => {
-      const getToken = localStorage.getItem("token");
-      if(getToken)  {
-        setToken(getToken);
-      } else if (!getToken) {
-        Router.push("/login");
-      }
-  }
+    const getToken = localStorage.getItem("token");
+    if (getToken) {
+      setToken(getToken);
+    } else if (!getToken) {
+      Router.push("/login");
+    }
+  };
 
   const signUp = async () => {
     const data = {
       username: username.value,
       email: email.value,
-      password: password.value
-    }
+      password: password.value,
+    };
 
     await fetch("http://localhost:4000/api/auth/signup", {
       method: "POST",
@@ -58,19 +58,19 @@ const useUser = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        alert(res.message)
-        Router.push("/login")
+        alert(res.message);
+        Router.push("/login");
       });
-    };
+  };
 
   const logOut = () => {
-      if (!isLogged) {
-        setIsLogged(false);
-      } else {
-        localStorage.removeItem("token");
-        localStorage.removeItem("userRole");
-        Router.push("/login");
-      }
+    if (!isLogged) {
+      setIsLogged(false);
+    } else {
+      localStorage.removeItem("token");
+      localStorage.removeItem("userRole");
+      Router.push("/login");
+    }
   };
 
   return {
@@ -79,8 +79,9 @@ const useUser = () => {
     logOut,
     checkToken,
     token,
-    isLogged
-  }
+    isLogged,
+    logOut,
+  };
 };
 
 export default useUser;

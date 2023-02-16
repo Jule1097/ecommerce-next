@@ -7,6 +7,46 @@ const EditProduct = (props) => {
 
   const { setProducts, productInfo, editProduct} = useProducts(props);
 
+  useEffect(() => {
+    fetch(`http://localhost:4000/api/products/${props.id}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application-json",
+        Accept: "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        setProduct(res);
+      });
+  }, []);
+
+  const sendEditProduct = async () =>  {
+    const data = {
+      id: id.value,
+      name: nombre.value,
+      price: price.value,
+      image: image.value,
+      stock: stock.value,
+      category: category.value,
+    };
+
+    await fetch(`http://localhost:4000/api/products/${props.id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        alert(res.message);
+        router.push({pathname:"/store"});
+      });
+  };
+
   return (
     <form>
       <div>

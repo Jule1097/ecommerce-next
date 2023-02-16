@@ -10,6 +10,7 @@ const Products = (props) => {
   const router = useRouter();
   const {productList,products,productsCategories,deleteFilters,addNewProduct,deleteProductFromDB,getProductData} = useProducts(props)
 
+
   if (!havePermissions(router.pathname,role) && router.pathname !== "/login" && router.pathname !== "/carrito") {
     return (
       <Fragment>
