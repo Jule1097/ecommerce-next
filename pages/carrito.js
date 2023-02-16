@@ -17,7 +17,7 @@ const carrito = (columns) => {
     return (
       <div>
         <h1 className="page-content">Mi Carrito</h1>
-        <a href="/">Volver</a>
+        <a href="/store">Volver</a>
         <Carrito
           columns={[
             { id: 1, field: "quantity", headerName: "Cantidad" },

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import Products from "../components/Products";
-import Router from "next/router";
 import { useRouter } from "next/router";
 import havePermissions from "../helpers/havePermissions";
+import useUser from "../hooks/useUser";
 
 export default function Home(data) {
-  const [islogged, setIsLogged] = useState(true);
+
+  const {logOut} = useUser()
+
   const [token, setToken] = useState("");
   const router = useRouter();
 
@@ -13,16 +15,6 @@ export default function Home(data) {
     const getToken = localStorage.getItem("token");
     setToken(getToken);
   }, []);
-
-  const logOut = () => {
-    if (!islogged) {
-      setIsLogged(false);
-    } else {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userRole");
-      Router.push("/login");
-    }
-  };
 
   if(havePermissions(router.pathname)) {
     return (

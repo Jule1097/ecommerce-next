@@ -19,7 +19,7 @@ const EditProduct = (props) => {
       });
   }, []);
 
-  const sendEditProduct = () => {
+  const sendEditProduct = async () =>  {
     const data = {
       id: id.value,
       name: nombre.value,
@@ -29,7 +29,7 @@ const EditProduct = (props) => {
       category: category.value,
     };
 
-    fetch(`http://localhost:4000/api/products/${props.id}`, {
+    await fetch(`http://localhost:4000/api/products/${props.id}`, {
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -41,7 +41,7 @@ const EditProduct = (props) => {
       .then((res) => res.json())
       .then((res) => {
         alert(res.message);
-        router.push({pathname:"/"});
+        router.push({pathname:"/store"});
       });
   };
 
@@ -119,7 +119,7 @@ const EditProduct = (props) => {
         type="button"
         className="button button-block"
         value="Cancelar"
-        onClick={() => router.push({pathname:"/"})}
+        onClick={() => router.push({pathname:"/store"})}
       ></input>
     </form>
   );
