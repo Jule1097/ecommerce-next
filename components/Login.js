@@ -2,7 +2,7 @@ import useUser from "../hooks/useUser";
 
 const Login = () => {
 
-  const {signIn} = useUser()
+  const {signIn, test} = useUser()
 
   return (
     <div className="contenido-tab">

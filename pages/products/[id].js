@@ -1,11 +1,10 @@
 import EditProduct from "/components/EditProduct";
 import { useRouter } from "next/router";
-import useToken from "../../hooks/useToken";
+import useUser from "../../hooks/useUser";
 
 const products = (props) => {
 
-  const {token} = useToken
-
+  const {token} = useUser()
   const router = useRouter();
   const { id } = router.query;
 

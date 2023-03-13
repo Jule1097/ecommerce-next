@@ -1,9 +1,14 @@
 import Router from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const useUser = () => {
   const [isLogged, setIsLogged] = useState(true);
   const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const getToken = localStorage.getItem("token");
+    setToken(getToken);
+  })
 
   const signIn = async (email, password) => {
     const data = {
@@ -31,6 +36,7 @@ const useUser = () => {
         }
       });
   };
+
 
   const checkToken = () => {
     const getToken = localStorage.getItem("token");
@@ -78,9 +84,9 @@ const useUser = () => {
     signUp,
     logOut,
     checkToken,
+    logOut,
     token,
     isLogged,
-    logOut,
   };
 };
 

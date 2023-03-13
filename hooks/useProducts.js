@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
 
 let carrito = [];
+let productInfo = {};
 
 const useProducts = (props) => {
   const products = props.data.data;
   const [productList, setProducts] = useState(products);
-  const [productInfo, setProductInfo] = useState([]);
   const [role, setRole] = useState("");
   const router = useRouter();
 
-  useEffect(() => {  
+  useEffect(() => {
     const userRole = localStorage.getItem("userRole");
     setRole(userRole);
-  });
+  }, []);
 
   const productsCategories = (category) => {
     const findCategory = productList.filter((e) => e.category === category);
@@ -76,51 +76,51 @@ const useProducts = (props) => {
       .then((res) => res.json())
       .then((res) => {
         alert(res.message);
-        router.push({ pathname: "/store"});
+        router.push({ pathname: "/store" });
       });
+  };
+
+  
+  const getProductDataById = async (props) => {
+   await fetch(`http://localhost:4000/api/products/${props}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application-json",
+        Accept: "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        productInfo = res
+      });
+  };
+
+  const editProduct = (props) => {
+
+    const data = {
+      id: id.value,
+      name: nombre.value,
+      price: price.value,
+      image: image.value,
+      stock: stock.value,
+      category: category.value,
     };
 
-    const getProductData = (props) => {
-
-       fetch(`http://localhost:4000/api/products/${props}`, {
-        method: "GET",
-        headers: {
-          "Content-type": "application-json",
-          Accept: "application/json",
-        },
-      })
-        .then((res) => res.json())
-        .then((res) => {
-            console.log(res)   
-        })
-      };  
-  
-    const editProduct = (props) => {
-
-      const data = {
-        id: id.value,
-        name: nombre.value,
-        price: price.value,
-        image: image.value,
-        stock: stock.value,
-        category: category.value,
-      };
-  
-      fetch(`http://localhost:4000/api/products/${props.id}`, {
-        method: "PUT",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          "x-access-token": props.token,
-        },
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          alert(res.message);
-          router.push({ pathname: "/store"});
-        });
-    }
+    fetch(`http://localhost:4000/api/products/${props.id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "x-access-token": props.token,
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        alert(res.message);
+        router.push({ pathname: "/store" });
+      });
+  };
 
   return {
     productList,
@@ -131,13 +131,13 @@ const useProducts = (props) => {
     productsCategories,
     deleteFilters,
     createProduct,
-    getProductData,
     editProduct,
     addNewProduct,
     deleteProductFromDB,
     productsCategories,
-    deleteFilters
-  }
+    deleteFilters,
+    getProductDataById
+  };
 };
 
 export default useProducts;

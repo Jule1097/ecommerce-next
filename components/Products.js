@@ -1,17 +1,15 @@
 import { Fragment, useState } from "react";
 import { useRouter } from "next/router";
-
 import havePermissions from "../helpers/havePermissions";
 import useProducts from "../hooks/useProducts";
-
 
 const Products = (props) => {
   const [role, setRole] = useState("");
   const router = useRouter();
-  const {productList,products,productsCategories,deleteFilters,addNewProduct,deleteProductFromDB,getProductData} = useProducts(props)
+  const {productList,products,productsCategories,deleteFilters,addNewProduct,deleteProductFromDB,getProductDataById} = useProducts(props)
 
 
-  if (!havePermissions(router.pathname,role) && router.pathname !== "/login" && router.pathname !== "/carrito") {
+  if (!havePermissions(router.pathname) && router.pathname !== "/login" && router.pathname !== "/carrito") {
     return (
       <Fragment>
          <div>
@@ -49,6 +47,9 @@ const Products = (props) => {
                   onClick={() => productsCategories(e.category)}>{e.category}</li>  
           ))}
          </div>
+         <button onClick={() => router.push({ pathname: "/products" })}>
+            Añadir Producto
+          </button>
         <button onClick={() => deleteFilters()}>Borrar Filtros</button>
         {productList.map((e) => (
           <div key={e._id} className="product-container">
@@ -63,7 +64,7 @@ const Products = (props) => {
             </button>
             <button onClick={() => deleteProductFromDB(e._id)}>Eliminar</button>
             <button
-              onClick={() =>{getProductData(e._id);
+              onClick={() =>{getProductDataById(e._id);
                 router.push({
                   pathname: `/products/${e._id}`,
                 });}

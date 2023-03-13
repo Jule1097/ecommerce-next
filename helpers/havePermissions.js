@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 
 const havePermissions = (route) => {
 
   const [role, setRole] = useState("");
   const [rolePermissions, setRolePermissions] = useState([]);
-
-  const router = useRouter();
 
   useEffect(() => {
     const userRole = localStorage.getItem("userRole");
@@ -15,35 +12,24 @@ const havePermissions = (route) => {
     const getRole = localStorage.getItem("userRole");
 
     if(getRole) {
-      const permissionsByRole = roles.find((e) => e.Role === getRole).Permissions;
-      setRolePermissions(permissionsByRole);
-    }
-  }, []);
+      fetch("http://localhost:4000/api/rolepermissions", {
+        method: "GET",
+        headers: {
+          "Content-type": "application-json",
+        },
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          setRolePermissions(res.find(e => e.role === getRole).permissions)
+        });
+      } 
+    }, []);
 
-  const roles = [
-    {
-      Role: "admin",
-      Permissions: [
-        {
-          Models: "store",
-          Actions: ["GET", "POST", "PUT", "DELETE"],
-        },
-        {
-          Models: "orders",
-          Actions: ["GET", "DELETE"],
-        },
-      ],
-    },
-    {
-      Role: "user",
-      Permissions: [
-        {
-          Models: "/",
-          Actions: ["GET"],
-        },
-      ],
-    },
-  ];
+    console.log(rolePermissions)
+    
+    
+    
+
 
   // obtener modelo y accion de route
   const routeSplit = route.split("/");
@@ -59,8 +45,7 @@ const havePermissions = (route) => {
   }
 
   // si contiene el modelo y la accion = True;
-  const checkModelAndActions = rolePermissions.some((e) => e.Models.includes(getModelFromRoute) && rolePermissions.some((e) => e.Actions.includes(setAction))
-  );
+  const checkModelAndActions = rolePermissions.some((e) => e.model.includes(getModelFromRoute) && rolePermissions.some((e) => e.actions.includes(setAction)));
 
   if (checkModelAndActions) {
     return true;

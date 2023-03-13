@@ -1,10 +1,10 @@
 import NewProduct from "../../components/NewProduct";
-import useToken from "../../hooks/useToken";
+import useUser from "../../hooks/useUser";
 
 
 const addProducts = (props) => {
   
-  const { token } = useToken
+  const { token } = useUser
 
   return (
     <div>
